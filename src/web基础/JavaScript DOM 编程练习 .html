@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>风吹起如花的流年，而你成为最美的点缀。。。</title>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var nameNode = document.getElementById("username");
+            nameNode.value = "913305160";
+            var passwordNode = document.getElementById("password");
+            passwordNode.value = "zhanghuan5201314";
+            changeText();
+            handleNode();
+            selectSport();
+        };
+
+        /**
+         * 点击标签改变显示内容
+         */
+        function changeText() {
+            var liNodes = document.getElementsByTagName("li");
+            //alert(liNodes.length);
+            for (var i = 0; i < liNodes.length; i++) {
+                // 1.只有元素节点才有点击事件
+
+                //function()为JS中的匿名函数，此处onclick响应函数即为这个匿名函数
+                liNodes[i].onclick = function () {
+                    textNodeChange(this);
+                };
+            }
+        }
+
+        function textNodeChange(liNode) {        //JS中的参数不需要类型,也不需要定义返回值
+            var reg = /\^+/g;    // 2.JS中的正则与Java中有些不同
+            var liNodeText = liNode.firstChild.nodeValue;  // 文本节点的nodeValue属性即为文本值
+            //alert(liNodeText.nodeValue);
+            if (reg.test(liNodeText)) { // 3.JS中正则匹配字符串的方法与Java不同
+                liNodeText = liNodeText.replace(reg, "");
+            } else {
+                liNodeText = "^-^" + liNodeText;
+            }
+            liNode.firstChild.nodeValue = liNodeText;
+        }
+
+
+        /*        JS中只有全局作用域和函数局部作用域，没有Java中的块级作用域{}，其中变量有两种声明方式：
+                 1.显式声明： var 变量名，代表局部变量，仅在函数作用域有效。
+                 2.隐式声明： 直接变量名 ，代表全局变量。
+                 同时函数的参数都为局部变量，变量的访问遵循层级向上，优先级：函数内>外部函数内>全局
+                 如：
+
+                function test() {
+                    c = 3; //当全局变量在函数体内声明赋值后，再被var 声明后，它就显式变为了局部变量，失去全局变量的特性
+                    var c = 2;
+                    alert(c);
+                    var a, b;
+                    (function () {  //匿名函数创建并调用,JS可以在函数中定义内部方法，并且仅能在函数中调用这个内部方法。
+                        alert(c);
+                        var c = 1;
+                        alert(a);
+                        alert(b);
+                        var a = b = 3;
+                        alert(a);
+                        alert(b);
+                    })();
+                    alert(a);
+                    alert(b);
+                }
+                结果输出 undefined、 undefined、 3 、3 、undefined、 3*/
+
+        function handleNode() {
+            var buttonNodes = document.getElementsByTagName("button");
+            for (var i = 0; i < buttonNodes.length; i++) {
+                buttonNodes[i].onclick = function () {
+                    var inputNode = document.getElementById("inputTextNode");
+                    switch (this.name) {
+                        case "add":
+                            addNode(inputNode);
+                            return false;
+                        //在onclick相应函数结尾处添加return false，就可以取消提交按钮的默认行为
+                        case "swipe":
+                            var swipeNodes = document.getElementsByName("swipeNode");
+                            swipeChildNode2(getNodesArray(swipeNodes[0])[0], getNodesArray(swipeNodes[1])[0]);
+                            break;
+                        default:
+                            var range;
+                            if (this.name === "deleteSingle") {
+                                range = "default";
+                            } else if (this.name === "deleteAll") {
+                                range = "all";
+                            }
+                            deleteNode(inputNode, range);
+                            return false;
+                    }
+                };
+            }
+
+            /**
+             * 选择类型再输入后插入新节点
+             */
+            function addNode(node) {
+                var selection;
+                var types = document.getElementsByName("type");
+                for (var j = 0; j < types.length; j++) {
+                    if (types[j].checked) {
+                        selection = types[j].value;
+                    }
+                }
+                var name = node.value;
+                var reg = /\S+/g;  //该正则表示非空白字符至少出现一次
+                if (selection == null) {
+                    alert("请选择类型后再提交");
+                } else if (!reg.test(name) || name == null) {
+                    alert("请输入内容后再提交");
+                } else {
+                    var newNode = document.createElement("li");
+                    newNode.appendChild(document.createTextNode(name));
+                    var ulNodes = document.getElementsByTagName("ul");
+                    for (var i = 0; i < ulNodes.length; i++) {
+                        if (selection === ulNodes[i].id) {
+                            ulNodes[i].appendChild(newNode);
+                        }
+                    }
+                    newNode.onclick = function () {
+                        textNodeChange(this);
+                    }
+                }
+            }
+
+            /**
+             * 交换子节点
+             * @param newChild
+             * @param oldChild
+             */
+            function swipeChildNode1(newChild, oldChild) {
+                //交换节点需要创建一个临时节点，该节点必须与交换的两个节点之一相同
+                var tempChildNode = document.createElement(newChild.tagName);
+                tempChildNode.appendChild(document.createTextNode(newChild.firstChild.nodeValue));
+                var oldElement = oldChild.parentNode;
+                var newElement = newChild.parentNode;
+                oldElement.replaceChild(tempChildNode, oldChild);
+                newElement.replaceChild(oldChild, newChild);
+            }
+
+            function swipeChildNode2(aNode, bNode) {
+                if (aNode.firstChild.nodeValue === bNode.firstChild.nodeValue) {
+                    return;
+                }
+                var bParent = bNode.parentNode;
+                var aParent = aNode.parentNode;
+                if (bParent && aParent) {
+                    var tempChildNode = aNode.cloneNode(true);
+                    //cloneNode（）克隆节点，参数为true表示子节点也会克隆
+                    tempChildNode.onclick = function () {
+                        textNodeChange(this);
+                    };
+                    bParent.replaceChild(tempChildNode, bNode);
+                    aParent.replaceChild(bNode, aNode);
+                }
+            }
+
+            /***
+             * 根据输入的文本获得节点数组，过程中判断节点是否存在
+             * @param node
+             * @returns {Array}
+             */
+            function getNodesArray(node) {
+                var liNodes = document.getElementsByTagName("li");
+                var exist = false;
+                var nodeArray = [];
+                for (var j = 0; j < liNodes.length; j++) {
+                    if (node.value.trim() === liNodes[j].firstChild.nodeValue.trim()) {
+                        exist = true;
+                        nodeArray.push(liNodes[j]);
+                    }
+                }
+                if (!exist) {
+                    alert("输入的节点不存在！");
+                } else {
+                    return nodeArray;
+                }
+            }
+
+            function deleteNode(inputNode, range) {
+                var result = confirm("确定删除" + inputNode.value + "?");
+                if (result) {
+                    var nodesArray = getNodesArray(inputNode);
+                    switch (range) {
+                        case "all":
+                            for (var i = 0; i < nodesArray.length; i++) {
+                                var nodeParent = nodesArray[i].parentNode;
+                                nodeParent.removeChild(nodesArray[i]);
+                            }
+                            break;
+                        default:
+                            var parent = nodesArray[0].parentNode;
+                            parent.removeChild(nodesArray[0]);
+                            break;
+                    }
+                }
+            }
+        }
+
+        function selectSport() {
+            var nodes = document.getElementsByTagName("input");
+            for (var i = 0; i < nodes.length; i++) {
+                nodes[i].onclick = function () {
+                    var nodesArray = [];
+                    var itemNodes = document.getElementsByName("items");
+                    for (var i = 0; i < itemNodes.length; i++) {
+                        switch (this.id) {
+                            case "checkedAll_2":
+                                itemNodes[i].checked = this.checked;
+                                break;
+                            case "CheckedAll":
+                                itemNodes[i].checked = true;
+                                break;
+                            case "CheckedNo":
+                                itemNodes[i].checked = false;
+                                break;
+                            case  "CheckedRev":
+                                itemNodes[i].checked = !itemNodes[i].checked;
+                                break;
+                            case  "send":
+                                if (itemNodes[i].checked) {
+                                    nodesArray.push(itemNodes[i]);
+                                }
+                                break;
+                        }
+                    }
+                    if (this.name === "send") {
+                        getSportName(nodesArray) ? alert("你选择了：" +
+                            getSportName(nodesArray)) : alert("你没有选择任何运动！");
+                    }
+                    selectAllStatus(itemNodes);
+                };
+            }
+
+            function selectAllStatus(itemNodes) {
+                var flag = true;
+                var selectAll = document.getElementById("checkedAll_2");
+                for (var j = 0; j < itemNodes.length; j++) {
+                    if (!itemNodes[j].checked) {
+                        flag = false;
+                    }
+                }
+                flag ? selectAll.checked = true : selectAll.checked = false;
+            }
+
+            function getSportName(nodesArray) {
+                var bufferString = "";
+                for (var i = 0; i < nodesArray.length; i++) {
+                    if (nodesArray.length - 1 === i) {
+                        bufferString += nodesArray[i].value;
+                    } else {
+                        bufferString += nodesArray[i].value + "、";
+                    }
+                }
+                return bufferString;
+            }
+        }
+    </script>
+</head>
+<body>
+<p>你喜欢哪个城市？</p>
+<ul id="city">
+    <li id="shanghai">上海</li>
+    <li id="beijing">北京</li>
+    <li id="hangzhou">杭州</li>
+</ul>
+
+<p>你喜欢哪款游戏?</p>
+<ul id="game">
+    <li id="LOL">英雄联盟</li>
+    <li id="wzry">王者荣耀</li>
+    <li id="cjzc">刺激战场</li>
+</ul>
+
+<br>
+账户：<label for="username"></label><input type="text" id="username"> <br>
+密码：<label for="password"></label><input type="password" id="password"> <br><br>
+
+<form name="myForm">
+    <label>
+        <input type="radio" name="type" value="city">
+    </label>城市
+    <label>
+        <input type="radio" name="type" value="game">
+    </label>游戏 <br>
+    name:<label>
+    <input id="inputTextNode" type="text">
+</label>
+    <button name="add">添加节点</button>
+    <button name="deleteSingle">删除单个</button>
+    <button name="deleteAll">删除所有</button>
+</form>
+节点1: <label>
+    <input type="text" name="swipeNode">
+</label>
+节点2: <label>
+    <input type="text" name="swipeNode">
+</label>
+<button name="swipe">交换节点</button>
+
+<table id="myTable" bgcolor="aqua" title="我的表格" border="1" cellpadding="5"
+       align="center">
+    <tbody align="center">
+    <tr>
+        <th title="city">城市</th>
+        <th title="game">游戏</th>
+        <th title="music">音乐</th>
+    </tr>
+    <tr>
+        <td>上海</td>
+        <td>英雄联盟</td>
+        <td>月光</td>
+    </tr>
+    <tr>
+        <td>北京</td>
+        <td>王者荣耀</td>
+        <td>天若有情</td>
+    </tr>
+    <tr>
+        <td>杭州</td>
+        <td>刺激战场</td>
+        <td>月亮</td>
+    </tr>
+    </tbody>
+</table>
+
+<form method="post" action="">
+    你爱好的运动是？<label for="checkedAll_2"></label>
+    <input type="checkbox" id="checkedAll_2"/>全选/全不选
+
+    <br/>
+    <label>
+        <input type="checkbox" name="items" value="足球"/>
+    </label>足球
+    <label>
+        <input type="checkbox" name="items" value="篮球"/>
+    </label>篮球
+    <label>
+        <input type="checkbox" name="items" value="羽毛球"/>
+    </label>羽毛球
+    <label>
+        <input type="checkbox" name="items" value="乒乓球"/>
+    </label>乒乓球
+
+    <br/>
+    <input type="button" id="CheckedAll" value="全　选"/>
+    <input type="button" id="CheckedNo" value="全不选"/>
+    <input type="button" id="CheckedRev" value="反　选"/>
+    <input type="button" id="send" name="send" value="提　交"/>
+</form>
+
+</body>
+</html>
