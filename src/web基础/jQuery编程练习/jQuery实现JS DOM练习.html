@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>风吹起如花的流年，而你成为最美的点缀。。。</title>
+    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $("#username").val("913305160");
+            $("#password").val("zhanghuan5201314");
+            $("li").click(function () {
+                textChange($(this));
+            });
+
+            $("button").click(function () {
+                var $inputTextNode = $("#inputTextNode");
+                var inputText = $.trim($inputTextNode.val());
+                $inputTextNode.val("");
+                switch (this.name) {
+                    case "add":
+                        addNode(inputText);
+                        return false;
+                    case "deleteSingle":
+                        deleteNode(inputText, "default");
+                        return false;
+                    case "deleteAll":
+                        deleteNode(inputText, "all");
+                        return false;
+                    case "swipe":
+                        swipeNode($(":text[name ='swipeNode']")[0],
+                            $(":text[name ='swipeNode']")[1]);
+
+                        return false;
+                }
+
+                function textChange($node) {
+                    var reg = /^\^{2}/g;
+                    var originalText = $node.text();
+                    if (reg.test(originalText)) {
+                        $node.text(originalText.replace(reg, ""));
+                    } else {
+                        $node.text("^^" + originalText);
+                    }
+                }
+
+                function addNode(inputText) {
+                    var addType = $(":radio:checked").val();
+                    if (addType == null) {
+                        alert("请先选择类型！");
+                        return;
+                    }
+                    if (inputText == null || inputText === "") {
+                        alert("请输入内容！");
+                    } else {
+                        $("<li>" + inputText + "</li>").appendTo($("#" + addType)).click(function () {
+                            textChange($(this));
+                        });
+                    }
+                }
+
+                function getExistNode(inputText) {
+                    if (inputText == null || inputText === "") {
+                        alert("删除的节点不存在！");
+                        return;
+                    }
+                    var $existNodes = $("li:contains(" + inputText + ")");
+                    if ($existNodes.length === 0) {
+                        alert("删除的节点不存在！");
+                    } else {
+                        return $existNodes;
+                    }
+                }
+
+                function deleteNode(inputText, deleteRange) {
+                    var result = confirm("确定删除" + inputText + "?");
+                    if (result) {
+                        var $deleteNodes = getExistNode(inputText);
+                        switch (deleteRange) {
+                            case "all":
+                                $deleteNodes.remove();
+                                break;
+                            default:
+                                $deleteNodes[0].remove();
+                        }
+                    }
+                }
+
+                function swipeNode(node1, node2) {
+                    var $node1 = getExistNode($(node1).val());
+                    var $node2 = getExistNode($(node2).val());
+                    var $tempNode1 = $node1.clone(true);
+                    //node1替换为node2，node1消失，同时node1绑定的事件消失
+                    $node1.replaceWith($node2.clone(true));
+                    /*                $node2.replaceWith($node1.click(function () {
+                                        textChange($(this));
+                                    }));*/
+                    //node1替换之前克隆，所有的事件存在
+                    $node2.replaceWith($tempNode1);
+                }
+
+            });
+
+            selectSport();
+
+            function selectSport() {
+                $("input").click(function () {
+                    var $node = $(this);
+                    var selectedAll = true;
+                    $(":checkbox[name = 'items']").each(function () {
+                        switch ($node.attr("id")) {
+                            case "checkedAll_2":
+                               /*  以下情况应该使用prop()访问元素的属性：
+                                第一：只添加属性名称就可以使属性生效的就应该使用prop()，如**checked**属性和**disable**属性;
+                                第二：只存在true/false的属性（即值为布尔型的属性）应该使用prop()。*/
+                                this.checked = $node.prop("checked");
+                                break;
+                            case "checkedAll":
+                                this.checked = true;
+                                break;
+                            case "checkedNo":
+                                this.checked = false;
+                                break;
+                            case "checkedRev":
+                                this.checked = !this.checked;
+                                break;
+                        }
+                        if (!this.checked) {
+                            selectedAll = false;
+                        }
+                    });
+                    $("#checkedAll_2").prop("checked", selectedAll);
+
+                    /* is（）：检测匹配元素集合，如果其中至少有一个元素符合
+                    给定的表达式就返回true，参数可为选择器、DOM元素或 jQuery 对象。*/
+                    //alert($(this).is($("#send")));
+                    if ($(this).is("#send")) {
+                        var bufferString = "";
+                        $(":checkbox[name = 'items']:checked").each(function () {
+                            if ($(this).is(":checked:last") ){
+                                bufferString += $(this).val();
+                            } else {
+                                bufferString += $(this).val() + "、";
+                            }
+                        });
+                        bufferString !== "" ? alert("你选择了" + bufferString)
+                            : alert("你没有选择任何元素");
+                    }
+                });
+            }
+        })
+    </script>
+</head>
+<body>
+<p>你喜欢哪个城市？</p>
+<ul id="city">
+    <li id="shanghai">上海</li>
+    <li id="beijing">北京</li>
+    <li id="hangzhou">杭州</li>
+</ul>
+
+<p>你喜欢哪款游戏?</p>
+<ul id="game">
+    <li id="LOL">英雄联盟</li>
+    <li id="wzry">王者荣耀</li>
+    <li id="cjzc">刺激战场</li>
+</ul>
+
+<br>
+账户：<label for="username"></label><input type="text" id="username"> <br>
+密码：<label for="password"></label><input type="password" id="password"> <br><br>
+
+<form name="myForm">
+    <label>
+        <input type="radio" name="type" value="city">
+    </label>城市
+    <label>
+        <input type="radio" name="type" value="game">
+    </label>游戏 <br>
+    name:<label>
+    <input id="inputTextNode" type="text">
+</label>
+    <button name="add">添加节点</button>
+    <button name="deleteSingle">删除单个</button>
+    <button name="deleteAll">删除所有</button>
+</form>
+节点1: <label>
+    <input type="text" name="swipeNode">
+</label>
+节点2: <label>
+    <input type="text" name="swipeNode">
+</label>
+<button name="swipe">交换节点</button>
+
+<table id="myTable" bgcolor="aqua" title="我的表格" border="1" cellpadding="5"
+       align="center">
+    <tbody align="center">
+    <tr>
+        <th title="city">城市</th>
+        <th title="game">游戏</th>
+        <th title="music">音乐</th>
+    </tr>
+    <tr>
+        <td>上海</td>
+        <td>英雄联盟</td>
+        <td>月光</td>
+    </tr>
+    <tr>
+        <td>北京</td>
+        <td>王者荣耀</td>
+        <td>天若有情</td>
+    </tr>
+    <tr>
+        <td>杭州</td>
+        <td>刺激战场</td>
+        <td>月亮</td>
+    </tr>
+    </tbody>
+</table>
+
+<form method="post" action="">
+    你爱好的运动是？<label for="checkedAll_2"></label>
+    <input type="checkbox" id="checkedAll_2" />全选/全不选
+
+    <br/>
+    <label>
+        <input type="checkbox" name="items" value="足球"/>
+    </label>足球
+    <label>
+        <input type="checkbox" name="items" value="篮球"/>
+    </label>篮球
+    <label>
+        <input type="checkbox" name="items" value="羽毛球"/>
+    </label>羽毛球
+    <label>
+        <input type="checkbox" name="items" value="乒乓球"/>
+    </label>乒乓球
+
+    <br/>
+    <input type="button" id="checkedAll" value="全　选"/>
+    <input type="button" id="checkedNo" value="全不选"/>
+    <input type="button" id="checkedRev" value="反　选"/>
+    <input type="button" id="send" name="send" value="提　交"/>
+</form>
+</body>
+</html>
