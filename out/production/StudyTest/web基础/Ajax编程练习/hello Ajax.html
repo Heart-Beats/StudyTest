@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>风吹起如花的流年，而你成为最美的点缀。。。</title>
+
+    <style type="text/css">
+        div, li, p {
+            width: 140px;
+            height: 20px;
+            margin: 5px;
+            background: #aff;
+            float: initial;
+            font-size: 17px;
+            font-family: Verdana;
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var nodes =document.getElementsByTagName("a");
+            for(var i = 0;i<nodes.length;i++){
+               nodes[i].onclick = function () {
+                   var node = this;
+                    var xhr = getXMLHttpRequest();
+                    var url = this.href + "?time=" + new Date();
+                    xhr.open("get", url);
+                    xhr.send(null);
+                    xhr.onreadystatechange = function () {
+                        // alert(xhr.readyState);
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200 || xhr.status === 304) {
+                                if (node.firstChild.nodeValue === "点击") {
+                                    alert(xhr.responseText);
+                                } else {
+                                   var displayNode = document.getElementById("display_more");
+                                    displayNode.innerHTML= xhr.responseText;
+                                }
+                            }
+                        }
+                    };
+                    return false;
+                };
+            }
+
+        }
+
+        function getXMLHttpRequest() {
+            var xhr = false;
+            //如果返回对象则为true，返回null为false
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject("Microsoft.Http");
+            }
+            return xhr;
+        }
+
+    </script>
+</head>
+<body>
+<div>
+    <a href="hello.txt">点击</a>
+    <li><a href="html_data">张磊</a></li>
+    <div id="display_more"></div>
+</div>
+</body>
+</html>

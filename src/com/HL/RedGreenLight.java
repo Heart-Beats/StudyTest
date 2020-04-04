@@ -8,7 +8,7 @@ import java.util.TimerTask;
  * @author 淡然爱汝不离
  */
 public class RedGreenLight {
-    private String ligthClor;
+    private String lightColor;
     private Boolean flag = false;
     private long spaceTime;
 
@@ -17,12 +17,12 @@ public class RedGreenLight {
     }
 
     private void redLight() {
-        ligthClor = "红灯";
+        lightColor = "红灯";
         flag = false;
     }
 
-    private void greenLigth() {
-        ligthClor = "绿灯";
+    private void greenLight() {
+        lightColor = "绿灯";
         flag = true;
     }
 
@@ -38,7 +38,7 @@ public class RedGreenLight {
     //    }
     }
 
-    private synchronized void driverwatchlight() throws InterruptedException {
+    private synchronized void driverWatchLight() throws InterruptedException {
   //      synchronized (flag) {
             if (flag) {
                 this.wait();
@@ -58,15 +58,15 @@ public class RedGreenLight {
                 @Override
                 public void run() {
                     while (!flag) {
-                        greenLigth();
-                        System.out.println(ligthClor);
+                        greenLight();
+                        System.out.println(lightColor);
                         try {
                             Thread.sleep(spaceTime);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         redLight();
-                        System.out.println(ligthClor);
+                        System.out.println(lightColor);
                         try {
                             Thread.sleep(spaceTime);
                         } catch (InterruptedException e) {
@@ -113,7 +113,7 @@ public class RedGreenLight {
         public void run() {
             while (true) {
                 try {
-                    driverwatchlight();
+                    driverWatchLight();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

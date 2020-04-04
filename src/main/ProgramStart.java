@@ -1,11 +1,13 @@
 package main;
 
-import HL.util.FileUtil;
-import HL.util.MyArrayList;
 import com.HL.RedGreenLight;
 
-import java.io.IOException;
+import HL.util.FileUtil;
+import HL.util.MyArrayList;
 
+/**
+ * @author 淡然爱汝不离
+ */
 public class ProgramStart {
 
     public static void myArrayListStart() {
@@ -14,8 +16,8 @@ public class ProgramStart {
         myArrayList.add("张欢");
         myArrayList.add("我爱你");
         myArrayList.set(1, "很爱张欢");
-        //myArrayList.remove("很爱张欢");
-        myArrayList.remove("很爱");
+        // myArrayList.remove("很爱张欢");
+        myArrayList.remove("我爱你");
         for (int i = 0; i < myArrayList.getSize(); i++) {
             System.out.println(myArrayList.get(i));
         }
@@ -27,7 +29,7 @@ public class ProgramStart {
         //String srcPath = "C:/Users/HL_913305160/Desktop/第一行代码2/booksource-master/chapter14/CoolWeather";
         String srcPath = "C:/Users/HL_913305160/Desktop/付费音乐1";
         String targetPath = "C:/Users/HL_913305160/Desktop/付费音乐1";
-        //  FileUtil.copyToFile(srcPath,targetPath);
+        //FileUtil.copyToFile(srcPath,targetPath);
         try {
             FileUtil.copyToDir(srcPath, targetPath);
         } catch (Exception e) {
@@ -46,8 +48,6 @@ public class ProgramStart {
     static void fileMergeStart() {
         try {
             FileUtil.mergeSplitFile();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,19 +62,18 @@ public class ProgramStart {
         new Thread(driver).start();
     }
 
-    static void writeObjectStart() {
+    private static void writeObjectStart() {
         FileUtil.writeObject("C:/Users/HL_913305160/Desktop/1.txt");
     }
 
     public static void main(String[] args) {
+        myArrayListStart();
         //fileCopyStart();
         //fileSplitStart("C:/Users/HL_913305160/Desktop/新建文本文档.txt",5);
         //fileMergeStart();
         // FileTree.printFileTree(new File("E:\\程序开发软件安装包"), 0);
-        //
         // redGreenLightStart();
-        writeObjectStart();
-
+        //writeObjectStart();
     }
 }
 

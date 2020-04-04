@@ -1,6 +1,9 @@
 package HL.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileTree {
     /**
@@ -21,4 +24,31 @@ public class FileTree {
             }
         }
     }
+
+    List<File> fileList = new ArrayList<>();
+    //获取指定目录中的所有文件
+    List<File> traverseFiles(File file) {
+        if (!file.exists()) {
+            try {
+                throw new FileNotFoundException("指定的文件不存在");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        for (File tempFile : file.listFiles()) {
+            if (tempFile.isDirectory()) {
+                traverseFiles(tempFile);
+            } else {
+                fileList.add(tempFile);
+            }
+        }
+        return fileList;
+    }
+    public static void main(String[] args) {
+        FileTree fileTree = new FileTree();
+        String pathname = "E:/Java程序/StudyTest/src/HL";
+        List<File> files= fileTree.traverseFiles(new File(pathname));
+        System.out.println(files);
+    }
 }
+

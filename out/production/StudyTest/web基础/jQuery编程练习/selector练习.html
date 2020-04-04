@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>风吹起如花的流年，而你成为最美的点缀。。。</title>
+
+    <style type="text/css">
+        div, span, p {
+            width: 140px;
+            height: 140px;
+            margin: 5px;
+            background: #aaa;
+            border: #000 1px solid;
+            float: left;
+            font-size: 17px;
+            font-family: Verdana;
+        }
+
+        div.mini {
+            width: 55px;
+            height: 55px;
+            background-color: #aaa;
+            font-size: 12px;
+        }
+
+        div.hide {
+            display: none;
+        <!-- div为该类的会隐藏 -->
+        }
+    </style>
+
+    <!-- 导入jQuery库 -->
+    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            basicSelector();
+            gradationSelector();
+            animateIt();
+            basicFilterSelector();
+            contentFilterSelector();
+            visibleFilterSelector();
+            attributeFilterSelector();
+            childFilterSelector();
+            formAttributeFilterSelector();
+
+            /**
+             * 基本选择器
+             */
+            function basicSelector() {
+                var flag1 = false;
+                var flag2 = false;
+                var flag3 = false;
+                var flag4 = false;
+                var flag5 = false;
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn1":
+                            // $("#one").css("background", "#0ff");
+                            flag1 = !flag1;
+                            changeBackground(flag1, $("#one"));
+                            break;
+                        case "btn2":
+                            // $(".mini").css("background", "#0ff");
+                            flag2 = !flag2;
+                            changeBackground(flag2, $(".mini"));
+                            break;
+                        case "btn3":
+                            // $("div").css("background", "#0ff");
+                            flag3 = !flag3;
+                            changeBackground(flag3, $("div:visible"));
+                            break;
+                        case "btn4":
+                            // $("*").css("background", "#0ff");
+                            flag4 = !flag4;
+                            changeBackground(flag4, $("*"));
+                            break;
+                        case "btn5":
+                            // $("#two,span").css("background", "#0ff");
+                            flag5 = !flag5;
+                            changeBackground(flag5, $("#two,span"));
+                            break;
+                    }
+                });
+            }
+
+            /**
+             * 层级选择器
+             */
+            function gradationSelector() {
+                var flag1 = false;
+                var flag2 = false;
+                var flag3 = false;
+                var flag4 = false;
+                var flag5 = false;
+                var flag6 = false;
+                var flag7 = false;
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn_1":
+                            flag1 = !flag1;
+                            changeBackground(flag1, $("body div:visible"));
+                            break;
+                        case "btn_2":
+                            flag2 = !flag2;
+                            changeBackground(flag2, $("body > div:visible"));
+                            break;
+                        case "btn_3":
+                            flag3 = !flag3;
+                            changeBackground(flag3, $("#one + div:visible"));
+                            break;
+                        case "btn_4":
+                            flag4 = !flag4;
+                            changeBackground(flag4, $("#two ~ div:visible"));
+                            break;
+                        case "btn_5":
+                            flag5 = !flag5;
+                            changeBackground(flag5, $("#two").siblings("div:visible"));
+                            break;
+                        case "btn_6":
+                            flag6 = !flag6;
+                            //nextAll()获得指定元素后边的所有的指定元素
+                            changeBackground(flag6, $("#one").nextAll("span:first"));
+                            break;
+                        case "btn_7":
+                            flag7 = !flag7;
+                            //prevAll()获得指定元素前边的所有的指定元素
+                            changeBackground(flag7, $("#two").prevAll("div:visible"));
+                            break;
+                    }
+                });
+            }
+
+            /**
+             * 基本过滤选择器
+             */
+            function basicFilterSelector() {
+                var flag1 = false;
+                var flag2 = false;
+                var flag3 = false;
+                var flag4 = false;
+                var flag5 = false;
+                var flag6 = false;
+                var flag7 = false;
+                var flag8 = false;
+                var flag9 = false;
+                var flag10 = false;
+                var flag11 = false;
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn__1":
+                            flag1 = !flag1;
+                            changeBackground(flag1, $("div:visible:first"));
+                            break;
+                        case "btn__2":
+                            flag2 = !flag2;
+                            changeBackground(flag2, $("div:visible:last"));
+                            break;
+                        case "btn__3":
+                            flag3 = !flag3;
+                            changeBackground(flag3, $("div:not(.one):visible"));
+                            break;
+                        case "btn__4":
+                            flag4 = !flag4;
+                            changeBackground(flag4, $("div:even:visible"));
+                            break;
+                        case "btn__5":
+                            flag5 = !flag5;
+                            changeBackground(flag5, $("div:odd:visible"));
+                            break;
+                        case "btn__6":
+                            flag6 = !flag6;
+                            changeBackground(flag6, $("div:gt(3):visible"));
+                            break;
+                        case "btn__7":
+                            flag7 = !flag7;
+                            changeBackground(flag7, $("div:eq(3):visible"));
+                            break;
+                        case "btn__8":
+                            flag8 = !flag8;
+                            changeBackground(flag8, $("div:lt(3):visible"));
+                            break;
+                        case "btn__9":
+                            flag9 = !flag9;
+                            changeBackground(flag9, $(":header"));
+                            break;
+                        case "btn__10":
+                            flag10 = !flag10;
+                            changeBackground(flag10, $(":animated"));
+                            break;
+                        case "btn__11":
+                            flag11 = !flag11;
+                            changeBackground(flag11, $("#two").nextAll("span:first"));
+                            break;
+                    }
+                });
+            }
+
+            /**
+             * 内容过滤选择器
+             */
+            function contentFilterSelector() {
+                var flag1 = false;
+                var flag2 = false;
+                var flag3 = false;
+                var flag4 = false;
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn___1":
+                            flag1 = !flag1;
+                            changeBackground(flag1, $("div:contains(div):visible"));
+                            break;
+                        case "btn___2":
+                            flag2 = !flag2;
+                            changeBackground(flag2, $("div:empty:visible"));
+                            break;
+                        case "btn___3":
+                            flag3 = !flag3;
+                            changeBackground(flag3, $("div:has(.mini):visible"));
+                            break;
+                        case "btn___4":
+                            flag4 = !flag4;
+                            //changeBackground(flag4, $("div:not(:empty)"));
+                            changeBackground(flag4, $("div:parent:visible"));
+                            break;
+                    }
+                });
+            }
+
+            /**
+             * 可见性过滤选择器
+             */
+            function visibleFilterSelector() {
+                var flag1 = false;
+                var flag2 = false;
+                var flag3 = false;
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn____1":
+                            flag1 = !flag1;
+                            changeBackground(flag1, $("div:visible"));
+                            break;
+                        case "btn____2":
+                            flag2 = !flag2;
+                            //show(time):该方法可让不可见的元素变为可见   time表示时间，单位：ms
+                            //hide(time):该方法可让可见的元素变为不可见   time表示时间，单位：ms
+                            changeBackground(flag2, flag2 ? $("div:hidden").show(2000)
+                                : $(".hide,.none").hide(2000));
+                            //stop(): 可以停止当前正在执行的动画
+                            flag2 ? $("#mover").stop().hide() : animateIt();
+                            /* jQuery的很多方法支持方法的连缀，即一个方法的返回值是调用这个方法的
+                            jQuery对象，可以继续调用该对象的其它方法  */
+                            break;
+                        case "btn____3":
+                            flag3 = !flag3;
+                            //changeBackground(flag3, $("input:hidden"));
+                            //val（）：该方法可以返回某一表单元素的value属性值。
+                            alert($("input:hidden").val());
+                            break;
+                    }
+                });
+            }
+
+            /**
+             * 属性过滤选择器
+             */
+            function attributeFilterSelector() {
+                var flag1 = false;
+                var flag2 = false;
+                var flag3 = false;
+                var flag4 = false;
+                var flag5 = false;
+                var flag6 = false;
+                var flag7 = false;
+                var flag8 = false;
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn_____1":
+                            flag1 = !flag1;
+                            changeBackground(flag1, $("div[title]:visible"));
+                            break;
+                        case "btn_____2":
+                            flag2 = !flag2;
+                            changeBackground(flag2, $("div[title = 'test']:visible"));
+                            break;
+                        case "btn_____3":
+                            flag3 = !flag3;
+                            changeBackground(flag3, $("div[title != 'test']:visible"));
+                            break;
+                        case "btn_____4":
+                            flag4 = !flag4;
+                            changeBackground(flag4, $("div[title ^= 'te']:visible"));
+                            break;
+                        case "btn_____5":
+                            flag5 = !flag5;
+                            changeBackground(flag5, $("div[title $= 'est']:visible"));
+                            break;
+                        case "btn_____6":
+                            flag6 = !flag6;
+                            changeBackground(flag6, $("div[title *= 'es']:visible"));
+                            break;
+                        case "btn_____7":
+                            flag7 = !flag7;
+                            changeBackground(flag7, $("div[id][title *= 'es']:visible"));
+                            break;
+                        case "btn_____8":
+                            flag8 = !flag8;
+                            changeBackground(flag8, $("div[title][title != 'test']:visible"));
+                            break;
+                    }
+                });
+            }
+
+            /**
+             * 子元素过滤选择器
+             */
+            function childFilterSelector() {
+                var flag1 = false;
+                var flag2 = false;
+                var flag3 = false;
+                var flag4 = false;
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn______1":
+                            flag1 = !flag1;
+                            //选取子元素, 需要在选择器前添加一个空格.
+                            changeBackground(flag1, $("div.one :nth-child(2):visible"));
+                            break;
+                        case "btn______2":
+                            flag2 = !flag2;
+                            changeBackground(flag2, $("div.one :first-child:visible"));
+                            break;
+                        case "btn______3":
+                            flag3 = !flag3;
+                            changeBackground(flag3, $("div.one :last-child:visible"));
+                            break;
+                        case "btn______4":
+                            flag4 = !flag4;
+                            changeBackground(flag4, $("div.one :only-child:visible"));
+                            break;
+                    }
+                });
+            }
+
+            /**
+             * 表单属性过滤选择器
+             */
+            function formAttributeFilterSelector() {
+                $("input").click(function () {
+                    switch (this.id) {
+                        case "btn_______1":
+                            $(":text:enabled").val($("#inputText").val());
+                            break;
+                        case "btn_______2":
+                            $(":text:disabled").val($("#inputText").val());
+                            break;
+                        case "btn_______3":
+                            alert($(":checkbox[name = 'newsletter']:checked").length);
+                            break;
+                        case "btn_______4":
+                            $(":checkbox[name = 'newsletter']:checked").each(function () {
+                                alert(this.value);
+                            });
+                            break;
+                        case "btn_______5":
+                            //实际被选择的不是 select, 而是 select 的 option 子节点
+                            //所以要加一个 空格.
+                            //var len = $("select :selected").length;
+                            //alert(len);
+
+                            //因为 $("select :selected") 选择的是一个数组
+                            //当该数组中有多个元素时, 通过 .val() 方法就只能获取第一个被选择的值了.
+                            //alert($("select :selected").val());
+
+                            /*jQuery对象遍历的方式是each, 在each内部的this是正在得到的
+                             DOM对象,而不是一个jQuery对象*/
+                            $("select :selected").each(function(){
+                                alert(this.value);
+                            });
+                            break;
+                    }
+                });
+            }
+
+            function animateIt() {  //执行动画
+                $("#mover").slideToggle("slow", animateIt);
+            }
+
+            /***
+             * 选中对应的元素后改变元素的背景颜色
+             */
+            function changeBackground(running, element) {
+                /* 替换后有问题
+                if (element.length >= 36) { //选择所有元素那个
+                    var bodyNode = document.getElementsByTagName("html")[0];
+                    if (running) {
+                        defaultBodyNode = bodyNode.cloneNode(true);
+                        element.css("background", "#0ff");
+                    } else {
+                        bodyNode.parentNode.replaceChild(defaultBodyNode, bodyNode);
+                    }
+                    return;
+                }*/
+                running ? element.css("background", "#0ff")
+                    : element.css("background", "#aaa");
+            }
+        })
+    </script>
+</head>
+<body>
+<h5>基本选择器：</h5>
+<input type="button" value="选择 id 为 one 的元素" id="btn1"/>
+<input type="button" value="选择 class 为 mini 的所有元素" id="btn2"/>
+<input type="button" value="选择 元素名是 div 的所有元素" id="btn3"/>
+<input type="button" value="选择 所有的元素" id="btn4"/>
+<input type="button" value="选择 所有的 span 元素和id为two的元素" id="btn5"/>
+
+<h5>层级选择器：</h5>
+<input type="button" value="选择 body 内的所有 div 元素" id="btn_1"/>
+<input type="button" value="在 body 内, 选择子元素是 div 的." id="btn_2"/>
+<input type="button" value="选择 id 为 one 的下一个 div 元素" id="btn_3"/>
+<input type="button" value="选择 id 为 two 的元素后面的所有 div 兄弟元素" id="btn_4"/>
+<input type="button" value="选择 id 为 two 的元素所有 div 兄弟元素" id="btn_5"/>
+<input type="button" value="选择 id 为 one 的下一个 span 元素" id="btn_6"/>
+<input type="button" value="选择 id 为 two 的元素前边的所有的 div 兄弟元素" id="btn_7"/>
+
+
+<br><br>
+<div class="one" id="one">
+    id 为 one,class 为 one 的div
+    <div class="mini">class为mini</div>
+</div>
+<div class="one" id="two" title="test">
+    id为two,class为one,title为test的div
+    <div class="mini" title="other">class为mini,title为other</div>
+    <div class="mini" title="test">class为mini,title为test</div>
+</div>
+<div class="one">
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini"></div>
+</div>
+<div class="one">
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini">class为mini</div>
+    <div class="mini" title="tesst">class为mini,title为tesst</div>
+</div>
+<!--该div隐藏, 它会在style中查找到display:none 的那个div-->
+<div style="display:none;" class="none">style的display为"none"的div</div>
+<!--该div隐藏 -->
+<div class="hide">class为"hide"的div</div>
+
+<div>
+    包含input的type为"hidden"的div
+    <input id="button" type="hidden" size="8" value="我是子元素">
+</div>
+<span id="span">^^span元素^^ 111</span>
+<span id="span2">^^span元素^^ 222 </span>
+<div id="mover">正在执行动画的div元素.</div>
+
+<br><br><br><br><br><br><br>
+
+<h5>基本过滤选择器：</h5>
+<input type="button" value="选择第一个 div 元素" id="btn__1"/>
+<input type="button" value="选择最后一个 div 元素" id="btn__2"/>
+<input type="button" value="选择class不为 one 的所有 div 元素" id="btn__3"/>
+<input type="button" value="选择索引值为偶数的 div 元素" id="btn__4"/>
+<input type="button" value="选择索引值为奇数的 div 元素" id="btn__5"/>
+<input type="button" value="选择索引值为大于 3 的 div 元素" id="btn__6"/>
+<input type="button" value="选择索引值为等于 3 的 div 元素" id="btn__7"/>
+<input type="button" value="选择索引值为小于 3 的 div 元素" id="btn__8"/>
+<input type="button" value="选择所有的标题元素" id="btn__9"/>
+<input type="button" value="选择当前正在执行动画的所有元素" id="btn__10"/>
+<input type="button" value="选择 id 为 two 的下一个 span 元素" id="btn__11"/>
+
+<h5>内容过滤选择器：</h5>
+<input type="button" value="选择 含有文本 'div' 的 div 元素" id="btn___1"/>
+<input type="button" value="选择不包含子元素(或者文本元素) 的 div 空元素" id="btn___2"/>
+<input type="button" value="选择含有 class 为 mini 元素的 div 元素" id="btn___3"/>
+<input type="button" value="选择含有子元素(或者文本元素)的div元素" id="btn___4"/>
+
+<h5>可见性过滤选择器：</h5>
+<input type="button" value="选取所有可见的  div 元素" id="btn____1">
+<input type="button" value="选择所有不可见的 div 元素" id="btn____2"/>
+<input type="button" value="选择所有不可见的 input 元素" id="btn____3"/>
+
+<h5>属性过滤选择器：</h5>
+<input type="button" value="选取含有属性title 的div元素." id="btn_____1"/>
+<input type="button" value="选取属性title值等于'test'的div元素." id="btn_____2"/>
+<input type="button" value="选取属性title值不等于'test'的div元素(没有属性title的也将被选中)." id="btn_____3"/>
+<input type="button" value="选取属性title值 以'te'开始的div元素." id="btn_____4"/>
+<input type="button" value="选取属性title值 以'est'结束的div元素." id="btn_____5"/>
+<input type="button" value="选取属性title值 含有'es'的div元素." id="btn_____6"/>
+<input type="button" value="组合属性选择器,首先选取有属性id的div元素，然后在结果中 选取属性title值 含有'es'的 div 元素." id="btn_____7"/>
+<input type="button" value="选取含有title属性值,且title属性值不等于test的div 元素." id="btn_____8"/>
+
+<h5>子元素过滤选择器：</h5>
+<input type="button" value="选取每个class为one的div父元素下的第2个子元素." id="btn______1"/>
+<input type="button" value="选取每个class为one的div父元素下的第一个子元素." id="btn______2"/>
+<input type="button" value="选取每个class为one的div父元素下的最后一个子元素." id="btn______3"/>
+<input type="button" value="如果class为one的div父元素下的仅仅只有一个子元素，那么选中这个子元素." id="btn______4"/>
+
+<h5>表单对象属性过滤选择器:</h5>
+请输入内容： <label for="inputText"></label><input type="text" id="inputText"> <br>
+<input type="button" value="对表单内 可用input 赋值操作." id="btn_______1">
+<input type="button" value="对表单内 不可用input 赋值操作." id="btn_______2">
+<input type="button" value="获取多选框选中的个数." id="btn_______3">
+<input type="button" value="获取多选框选中的内容." id="btn_______4">
+<input type="button" value="获取下拉框选中的内容." id="btn_______5">
+
+<br><br>
+<form id="form1" action="#">
+     可用元素 : <label>
+    <input name="add" value="可用文本框1"/>
+</label><br>
+    不可用元素: <label>
+    <input name="email" disabled="true" value="不可用文本框"/>
+</label><br>
+     可用元素 : <label>
+    <input name="che" value="可用文本框2"/>
+</label><br>
+    不可用元素: <label>
+    <input name="name" disabled="true" value="不可用文本框"/>
+</label><br>
+    <br>
+
+    多选框: <br>
+    <label>
+        <input type="checkbox" name="newsletter" checked="checked" value="test1" />
+    </label>test1
+    <label>
+        <input type="checkbox" name="newsletter" value="test2" />
+    </label>test2
+    <label>
+        <input type="checkbox" name="newsletter" value="test3" />
+    </label>test3
+    <label>
+        <input type="checkbox" name="newsletter" checked="checked" value="test4" />
+    </label>test4
+    <label>
+        <input type="checkbox" name="newsletter" value="test5" />
+    </label>test5
+
+    <br><br>
+    下拉列表1: <br>
+    <label>
+        <select name="test" multiple="multiple" style="height: 100px">
+            <option>浙江</option>
+            <option selected="selected">辽宁</option>
+            <option>北京</option>
+            <option selected="selected">天津</option>
+            <option>广州</option>
+            <option>湖北</option>
+        </select>
+    </label>
+
+    <br><br>
+    下拉列表2: <br>
+    <label>
+        <select name="test2">
+            <option>浙江</option>
+            <option>辽宁</option>
+            <option selected="selected">北京</option>
+            <option>天津</option>
+            <option>广州</option>
+            <option>湖北</option>
+        </select>
+    </label>
+
+    <br>
+    <label>
+        <textarea rows="" cols=""></textarea>
+    </label>
+</form>
+</body>
+</html>

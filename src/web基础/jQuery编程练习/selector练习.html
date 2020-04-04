@@ -388,11 +388,11 @@
             /***
              * 选中对应的元素后改变元素的背景颜色
              */
-            function changeBackground(flag, element) {
+            function changeBackground(running, element) {
                 /* 替换后有问题
                 if (element.length >= 36) { //选择所有元素那个
                     var bodyNode = document.getElementsByTagName("html")[0];
-                    if (flag) {
+                    if (running) {
                         defaultBodyNode = bodyNode.cloneNode(true);
                         element.css("background", "#0ff");
                     } else {
@@ -400,7 +400,7 @@
                     }
                     return;
                 }*/
-                flag ? element.css("background", "#0ff")
+                running ? element.css("background", "#0ff")
                     : element.css("background", "#aaa");
             }
         })
