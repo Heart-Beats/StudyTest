@@ -30,7 +30,7 @@ public class FileTree {
     List<File> traverseFiles(File file) {
         if (!file.exists()) {
             try {
-                throw new FileNotFoundException("指定的文件不存在");
+                throw new FileNotFoundException("指定的目录不存在");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
